@@ -32,7 +32,8 @@ namespace todoapp.services
             mail.From = new MailAddress("todoapp@bk.ru");
             mail.To.Add(email);
             mail.Subject = subject;
-            mail.Body = message;
+            
+            mail.Body = message.Replace("&amp;", "&");
             smtpClient.Send(mail);
 
 
