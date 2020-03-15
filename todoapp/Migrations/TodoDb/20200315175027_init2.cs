@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace todoapp.Migrations
+namespace todoapp.Migrations.TodoDb
 {
-    public partial class initialTodo : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,11 +13,11 @@ namespace todoapp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 80, nullable: false),
-                    Completed = table.Column<bool>(nullable: false),
-                    Description = table.Column<string>(maxLength: 2000, nullable: false)
+                    Description = table.Column<string>(maxLength: 2000, nullable: false),
+                    Completed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

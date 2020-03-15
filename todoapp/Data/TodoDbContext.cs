@@ -20,6 +20,8 @@ namespace todoapp.Data
             
         }
 
+       
+
         public DbSet<TaskTodo> Tasks { get; set; }
     }
 }

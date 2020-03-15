@@ -31,12 +31,12 @@ namespace todoapp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+                options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddDbContext<TodoDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("TodoConection")));
+
+           services.AddDbContext<TodoDbContext>(options =>
+               options.UseMySql(
+                 Configuration.GetConnectionString("TodoConection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
