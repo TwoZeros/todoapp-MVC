@@ -34,9 +34,6 @@ namespace todoapp
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-           services.AddDbContext<TodoDbContext>(options =>
-               options.UseMySql(
-                 Configuration.GetConnectionString("TodoConection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

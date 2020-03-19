@@ -12,9 +12,9 @@ namespace todoapp.Controllers
 {
     public class TaskController : Controller
     {
-        private readonly TodoDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public TaskController(TodoDbContext context)
+        public TaskController(ApplicationDbContext context)
         {
             _context = context;
         }
