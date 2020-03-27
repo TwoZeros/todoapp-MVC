@@ -1,22 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using todoapp.Models
+@using Identity.Dapper.Entities
+@using todoapp.Entities
+
+@inject SignInManager<CustomUser> SignInManager
+@inject UserManager<CustomUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
 
 
-   <li class="nav-item d-none d-sm-inline-block">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-           <button style="color:#c2c7d0; " type="submit" class="nav-link btn btn-link">Logout</button>
-       </form>
+    <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" asp-controller="Account" asp-action="LogOff">
+            Logout
+        </a>
     </li>
 }
 else
 {
 
     <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">
+        <a class="nav-link" asp-controller="Account" asp-action="Login">
             Login
         </a>
     </li>

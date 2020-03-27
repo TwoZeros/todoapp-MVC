@@ -5,36 +5,37 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using todoapp.Data;
 using todoapp.Models;
+using todoapp.Repository.Interfaces;
+using todoDap.Repositories;
 
 namespace todoapp.Controllers
 {
     public class TaskController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public TaskController(ApplicationDbContext context)
+       
+        IRepository<TaskTodo> db;
+        public TaskController()
         {
-            _context = context;
+            db = new TodoRepository();
+           
         }
 
         // GET: TaskTodoes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Tasks.ToListAsync());
+            return View(db.GetAll());
         }
 
         // GET: TaskTodoes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var taskTodo = await _context.Tasks
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var taskTodo = db.GetById(id);
             if (taskTodo == null)
             {
                 return NotFound();
@@ -58,22 +59,21 @@ namespace todoapp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(taskTodo);
-                await _context.SaveChangesAsync();
+                db.Create(taskTodo);
                 return RedirectToAction(nameof(Index));
             }
             return View(taskTodo);
         }
 
         // GET: TaskTodoes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var taskTodo = await _context.Tasks.FindAsync(id);
+            var taskTodo = db.GetById(id);
             if (taskTodo == null)
             {
                 return NotFound();
@@ -97,8 +97,7 @@ namespace todoapp.Controllers
             {
                 try
                 {
-                    _context.Update(taskTodo);
-                    await _context.SaveChangesAsync();
+                    db.Update(taskTodo);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,15 +116,14 @@ namespace todoapp.Controllers
         }
 
         // GET: TaskTodoes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var taskTodo = await _context.Tasks
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var taskTodo = db.GetById(id);
             if (taskTodo == null)
             {
                 return NotFound();
@@ -135,19 +133,21 @@ namespace todoapp.Controllers
         }
 
         // POST: TaskTodoes/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var taskTodo = await _context.Tasks.FindAsync(id);
-            _context.Tasks.Remove(taskTodo);
-            await _context.SaveChangesAsync();
+        
+        var taskTodo = db.GetById(id);
+            db.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool TaskTodoExists(int id)
         {
-            return _context.Tasks.Any(e => e.Id == id);
+
+            return db.GetById(id) != null;
+
         }
     }
 }
